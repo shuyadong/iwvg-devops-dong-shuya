@@ -54,7 +54,7 @@ jobs:
       - name: 📊 Sonar Analysis
         run: >
           mvn -B sonar:sonar 
-          -Dsonar.projectKey=miw-upm-github_${{ env.ARTIFACT }}
+          -Dsonar.projectKey=ShuyaDongUPM_${{ env.ARTIFACT }}
           -Dsonar.organization=miw-upm-github 
           -Dsonar.host.url=https://sonarcloud.io 
           -Dsonar.token=${{ secrets.SONAR_TOKEN }}
