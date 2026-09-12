@@ -17,6 +17,26 @@ class UserResourceFT {
     private WebTestClient webTestClient;
 
     @Test
+    void testGetUserFound() {
+        webTestClient.get()
+                .uri("/user/{id}", "1")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.id").isEqualTo("1")
+                .jsonPath("$.firstName").isEqualTo("John")
+                .jsonPath("$.familyName").isEqualTo("Smith");
+    }
+
+    @Test
+    void testGetUserNotFound() {
+        webTestClient.get()
+                .uri("/user/{id}", "unknown")
+                .exchange()
+                .expectStatus().isNotFound();
+    }
+
+    @Test
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     void testDeleteUserFound() {
         webTestClient.delete()

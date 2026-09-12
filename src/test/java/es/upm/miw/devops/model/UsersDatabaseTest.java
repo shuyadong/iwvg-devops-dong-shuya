@@ -15,6 +15,20 @@ class UsersDatabaseTest {
     }
 
     @Test
+    void testFindByIdFound() {
+        var user = this.usersDatabase.findById("1");
+
+        assertThat(user).isPresent();
+        assertThat(user.get().firstName()).isEqualTo("John");
+        assertThat(user.get().familyName()).isEqualTo("Smith");
+    }
+
+    @Test
+    void testFindByIdNotFound() {
+        assertThat(this.usersDatabase.findById("unknown")).isEmpty();
+    }
+
+    @Test
     void testDeleteByIdFound() {
         boolean deleted = this.usersDatabase.deleteById("1");
 
