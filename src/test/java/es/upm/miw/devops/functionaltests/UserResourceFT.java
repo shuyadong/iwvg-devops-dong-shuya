@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -79,5 +80,29 @@ class UserResourceFT {
                 .expectStatus().isOk()
                 .expectBodyList(User.class)
                 .value(users -> assertThat(users).extracting(User::id).containsExactlyInAnyOrder("3", "5"));
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    void testSetActiveFound() {
+        webTestClient.put()
+                .uri("/user/{id}/active", "4")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(true)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.id").isEqualTo("4")
+                .jsonPath("$.active").isEqualTo(true);
+    }
+
+    @Test
+    void testSetActiveNotFound() {
+        webTestClient.put()
+                .uri("/user/{id}/active", "unknown")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(true)
+                .exchange()
+                .expectStatus().isNotFound();
     }
 }
