@@ -3,6 +3,8 @@ package es.upm.miw.devops.model;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class UsersDatabaseTest {
@@ -42,5 +44,19 @@ class UsersDatabaseTest {
 
         assertThat(deleted).isFalse();
         assertThat(this.usersDatabase.findByFilter(null, null, null)).hasSize(5);
+    }
+
+    @Test
+    void testFindByFilterBillableTrue() {
+        List<User> result = this.usersDatabase.findByFilter(null, null, true);
+
+        assertThat(result).extracting(User::id).containsExactlyInAnyOrder("1", "2", "4");
+    }
+
+    @Test
+    void testFindByFilterBillableFalse() {
+        List<User> result = this.usersDatabase.findByFilter(null, null, false);
+
+        assertThat(result).extracting(User::id).containsExactlyInAnyOrder("3", "5");
     }
 }
