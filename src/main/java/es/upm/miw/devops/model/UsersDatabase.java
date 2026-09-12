@@ -2,13 +2,14 @@ package es.upm.miw.devops.model;
 
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public class UsersDatabase {
 
-    private final List<User> users = List.of(
+    private final List<User> users = new ArrayList<>(List.of(
             new User("1", "John", "Smith", "john.smith@example.com", "12345678A",
                     "Calle Mayor 1", "Madrid", "Madrid", "28001", true, Role.ADMIN),
             new User("2", "Mary", "Johnson", "mary.johnson@example.com", "87654321B",
@@ -19,7 +20,7 @@ public class UsersDatabase {
                     "Plaza Espana 5", "Valencia", "Valencia", "46001", false, Role.USER),
             new User("5", "Michael", "Davis", null, "55667788D",
                     "Calle Sol 9", null, "Sevilla", "41001", false, Role.ADMIN)
-    );
+    ));
 
     public Optional<User> findById(String id) {
         return this.users.stream()
@@ -33,5 +34,9 @@ public class UsersDatabase {
                 .filter(user -> role == null || user.role() == role)
                 .filter(user -> billable == null || user.billable() == billable)
                 .toList();
+    }
+
+    public boolean deleteById(String id) {
+        return this.users.removeIf(user -> user.id().equals(id));
     }
 }
