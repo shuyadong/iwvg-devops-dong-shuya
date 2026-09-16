@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,5 +44,11 @@ public class UserResource {
         if (!this.usersDatabase.deleteById(id)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found: " + id);
         }
+    }
+
+    @PutMapping("/{id}/active")
+    public User setActive(@PathVariable String id, @RequestBody boolean active) {
+        return this.usersDatabase.updateActive(id, active)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found: " + id));
     }
 }

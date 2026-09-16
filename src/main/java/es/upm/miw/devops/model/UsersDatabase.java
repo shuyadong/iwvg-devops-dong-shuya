@@ -39,4 +39,13 @@ public class UsersDatabase {
     public boolean deleteById(String id) {
         return this.users.removeIf(user -> user.id().equals(id));
     }
+
+    public Optional<User> updateActive(String id, boolean active) {
+        return findById(id).map(user -> {
+            User updated = new User(user.id(), user.firstName(), user.familyName(), user.email(), user.identity(),
+                    user.address(), user.city(), user.province(), user.postalCode(), active, user.role());
+            this.users.set(this.users.indexOf(user), updated);
+            return updated;
+        });
+    }
 }
