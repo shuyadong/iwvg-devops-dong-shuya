@@ -11,10 +11,8 @@
 
 ### Estado del código
 [![DevOps](https://github.com/shuyadong/iwvg-devops-dong-shuya/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/shuyadong/iwvg-devops-dong-shuya/actions/workflows/continuous-integration.yml)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=shuyadong_iwvg-devops-dong-shuya&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=shuyadong_iwvg-devops-dong-shuya)
+[![Quality gate status](https://sonarcloud.io/api/project_badges/measure?project=shuyadong_iwvg-devops-dong-shuya&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=shuyadong_iwvg-devops-dong-shuya)
 [![Render broken](https://iwvg-devops-latest.onrender.com/version-badge)](https://iwvg-devops-latest.onrender.com/swagger-ui.html)
-
-
 ### Tecnologías necesarias
 `Java` `Maven` `GitHub` `GitHub Actions` `Sonarcloud` `Slack` `Spring-Boot` `GitHub Packages` `Docker` `OpenAPI`
 
