@@ -1,3 +1,5 @@
+name: iwvg-devops-dong-shuya
+
 services:
   devops:
     build: .
@@ -18,7 +20,8 @@ networks:
   devopsNet:
     external: true
 
+# Ambos ficheros (este y docker-compose-db.yml) pertenecen al mismo stack "iwvg-devops-dong-shuya".
 # Requiere la red y Postgres activos antes de arrancar la app:
 #> docker network create devopsNet
-#> docker compose -f docker-compose-db.yml -p databases up -d
+#> docker compose -f docker-compose-db.yml up -d
 #> docker compose up --build -d

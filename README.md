@@ -45,12 +45,13 @@ docker run -d --name devops1  -p 8080:8080 devops
 
 * Arrancar la base de datos Postgres (Se utiliza el fichero **docker-compose-db.yml**), solo una vez o cuando no esté ya en ejecución:
 ```sh
-docker compose -f docker-compose-db.yml -p databases up -d
+docker compose -f docker-compose-db.yml up -d
 ```
 * Comando para crear imagen y arrancarla en contenedor mediante docker compose (Se utiliza el fichero **docker-compose.yml**)
 ```sh
 docker compose up --build -d
 ```
+> Ambos comandos comparten el mismo stack Docker Compose **iwvg-devops-dong-shuya** (definido con `name:` en cada fichero), con dos servicios: **postgres** y **devops**.
 
 * Cliente Web: `http://localhost:8080`
 
