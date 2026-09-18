@@ -1,3 +1,5 @@
+name: iwvg-devops-dong-shuya
+
 services:
 
   postgres:
@@ -5,7 +7,7 @@ services:
     container_name: postgres
     restart: always
     environment:
-      POSTGRES_USER: postgres
+      POSTGRES_USER: postgresiwvg
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: iwvgdevopsdb
     ports:
@@ -23,8 +25,9 @@ networks:
   devopsNet:
     external: true
 
+# Pertenece al mismo stack "iwvg-devops-dong-shuya" que docker-compose.yml (servicio devops).
 # Construir todas las BD
-#> docker compose -f docker-compose-db.yml -p databases up -d
+#> docker compose -f docker-compose-db.yml up -d
 
 # CONSOLA & COMANDOS Postgres
 #> docker exec -it postgres  psql -U postgres

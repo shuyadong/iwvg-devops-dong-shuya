@@ -2,19 +2,29 @@ package es.upm.miw.devops.model;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DataJpaTest
+@Import(UsersDatabase.class)
 class UsersDatabaseTest {
 
+    @Autowired
     private UsersDatabase usersDatabase;
+
+    @Autowired
+    private UserJpaRepository userJpaRepository;
 
     @BeforeEach
     void setUp() {
-        this.usersDatabase = new UsersDatabase();
+        this.userJpaRepository.deleteAll();
+        DefaultUsers.seed().stream().map(UserEntity::from).forEach(this.userJpaRepository::save);
     }
 
     @Test
