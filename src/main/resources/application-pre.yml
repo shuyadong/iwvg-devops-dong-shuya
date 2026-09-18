@@ -1,0 +1,14 @@
+server:
+  port: ${PORT:8080}
+app:
+  hosting: render
+spring:
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+
