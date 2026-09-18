@@ -8,7 +8,8 @@ WORKDIR /app
    # Solo se copia el pom.xml al directorio de trabajo
 COPY pom.xml ./
    # Baja las dependencias sin conexión y en modo Batch (sin asistencia)
-RUN mvn dependency:go-offline -B
+   # Con reintentos porque Maven Central puede devolver 429 (Too Many Requests)
+RUN for i in 1 2 3 4 5; do mvn dependency:go-offline -B && break || sleep 15; done
    # Solo copia los fuentes java, NO los test
 COPY src ./src
    # Limpia y empaqueta (se crea el *.jar)
