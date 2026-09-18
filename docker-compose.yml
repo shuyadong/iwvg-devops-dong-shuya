@@ -11,7 +11,7 @@ services:
       DB_HOST: postgres
       DB_PORT: 5432
       DB_NAME: iwvgdevopsdb
-      DB_USER: postgres
+      DB_USER: postgresiwvg
       DB_PASSWORD: postgres
     networks:
       - devopsNet
