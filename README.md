@@ -43,6 +43,10 @@ docker build -t devops:latest .
 docker run -d --name devops1  -p 8080:8080 devops
 ```
 
+* Arrancar la base de datos Postgres (Se utiliza el fichero **docker-compose-db.yml**), solo una vez o cuando no esté ya en ejecución:
+```sh
+docker compose -f docker-compose-db.yml -p databases up -d
+```
 * Comando para crear imagen y arrancarla en contenedor mediante docker compose (Se utiliza el fichero **docker-compose.yml**)
 ```sh
 docker compose up --build -d
