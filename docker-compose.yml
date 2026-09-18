@@ -1,3 +1,5 @@
+name: iwvg-devops-dong-shuya
+
 services:
   devops:
     build: .
@@ -5,6 +7,12 @@ services:
     restart: always
     ports:
       - "8080:8080"
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: iwvgdevopsdb
+      DB_USER: postgresiwvg
+      DB_PASSWORD: postgres
     networks:
       - devopsNet
 
@@ -12,4 +20,8 @@ networks:
   devopsNet:
     external: true
 
+# Ambos ficheros (este y docker-compose-db.yml) pertenecen al mismo stack "iwvg-devops-dong-shuya".
+# Requiere la red y Postgres activos antes de arrancar la app:
+#> docker network create devopsNet
+#> docker compose -f docker-compose-db.yml up -d
 #> docker compose up --build -d
