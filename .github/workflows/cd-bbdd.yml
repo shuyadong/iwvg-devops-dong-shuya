@@ -2,8 +2,6 @@ name: CD-BBDD
 on:
   push:
     branches: ['main']
-    paths:
-      - 'docker-compose-db.yml'
   workflow_dispatch:
 
 jobs:
@@ -30,6 +28,7 @@ jobs:
           username: ${{ secrets.AWS_LIGHTSAIL_USER_MAIN }}
           key: ${{ secrets.AWS_LIGHTSAIL_SSH_KEY_MAIN }}
           script: |
+            sudo docker compose version >/dev/null 2>&1 || (sudo apt-get update -y && sudo apt-get install -y docker-compose-plugin)
             sudo docker network inspect devopsNet >/dev/null 2>&1 || sudo docker network create devopsNet
             sudo docker compose -f ~/docker-compose-db.yml up -d
 
