@@ -24,7 +24,7 @@ COPY --from=build /app/target/*.jar app.jar
    # Este contenedor escucha el puerto indicado
 EXPOSE 8080
    # Usa el endpoint de Actuator para que "docker inspect" pueda reportar el estado healthy/unhealthy
-HEALTHCHECK --interval=15s --timeout=5s --start-period=30s --retries=3 \
+HEALTHCHECK --interval=10s --timeout=5s --start-period=90s --retries=3 \
     CMD wget --spider -q http://localhost:8080/actuator/health || exit 1
    # Define un comando para cuando se inicialice el contenedor en el host: java -jar app.jar
 CMD ["java", "-jar", "app.jar"]
