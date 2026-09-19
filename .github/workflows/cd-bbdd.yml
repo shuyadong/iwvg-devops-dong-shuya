@@ -1,0 +1,40 @@
+name: CD-BBDD
+on:
+  push:
+    branches: ['main']
+    paths:
+      - 'docker-compose-db.yml'
+  workflow_dispatch:
+
+jobs:
+  cd-bbdd:
+    name: Deploy Postgres Database on AWS Lightsail
+    runs-on: ubuntu-22.04
+    steps:
+      - name: ⬇️ Checkout repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: 📤 Copy docker-compose-db.yml to AWS Lightsail
+        uses: appleboy/scp-action@ff85246acaad7bdce478db94a363cd2bf7c90345 # v1
+        with:
+          host: ${{ secrets.AWS_LIGHTSAIL_IP_MAIN }}
+          username: ${{ secrets.AWS_LIGHTSAIL_USER_MAIN }}
+          key: ${{ secrets.AWS_LIGHTSAIL_SSH_KEY_MAIN }}
+          source: 'docker-compose-db.yml'
+          target: '~/'
+
+      - name: 🐘 Deploy Postgres
+        uses: appleboy/ssh-action@8faa84277b88b6cd1455986f459aa66cf72bc8a3 # v1.2.1
+        with:
+          host: ${{ secrets.AWS_LIGHTSAIL_IP_MAIN }}
+          username: ${{ secrets.AWS_LIGHTSAIL_USER_MAIN }}
+          key: ${{ secrets.AWS_LIGHTSAIL_SSH_KEY_MAIN }}
+          script: |
+            sudo docker network inspect devopsNet >/dev/null 2>&1 || sudo docker network create devopsNet
+            sudo docker compose -f ~/docker-compose-db.yml up -d
+
+            echo "⏳ Esperando a que Postgres esté listo"
+            for i in $(seq 1 6); do
+              sleep 5
+              sudo docker exec postgres pg_isready -U postgresiwvg && break
+            done
