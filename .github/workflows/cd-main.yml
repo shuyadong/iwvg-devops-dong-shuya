@@ -59,12 +59,12 @@ jobs:
           username: ${{ secrets.AWS_LIGHTSAIL_USER_MAIN }}
           key: ${{ secrets.AWS_LIGHTSAIL_SSH_KEY_MAIN }}
           script: |
-            echo ${{ secrets.GHCR_PERSONAL_ACCESS_TOKEN }} | docker login ${{ env.GHCR_URL }} -u ${{ github.actor }} --password-stdin
+            echo ${{ secrets.GHCR_PERSONAL_ACCESS_TOKEN }} | sudo docker login ${{ env.GHCR_URL }} -u ${{ github.actor }} --password-stdin
 
-            docker pull ${{ env.GHCR_URL }}/${{ env.REPOSITORY }}:latest
-            docker network inspect devopsNet >/dev/null 2>&1 || docker network create devopsNet
-            docker rm -f ${{ env.ARTIFACT }} || true
-            docker run -d \
+            sudo docker pull ${{ env.GHCR_URL }}/${{ env.REPOSITORY }}:latest
+            sudo docker network inspect devopsNet >/dev/null 2>&1 || sudo docker network create devopsNet
+            sudo docker rm -f ${{ env.ARTIFACT }} || true
+            sudo docker run -d \
               --name ${{ env.ARTIFACT }} \
               --restart always \
               --memory 512m \
@@ -81,16 +81,16 @@ jobs:
             echo "⏳ Esperando a que se levante"
             for i in $(seq 1 6); do
               sleep 15
-              STATUS=$(docker inspect --format='{{.State.Health.Status}}' ${{ env.ARTIFACT }} 2>/dev/null)
+              STATUS=$(sudo docker inspect --format='{{.State.Health.Status}}' ${{ env.ARTIFACT }} 2>/dev/null)
               echo "Intento $i: $STATUS"
               [ "$STATUS" = "healthy" ] && break
             done
 
             if [ "$STATUS" != "healthy" ]; then
               echo "❌ Deploy fallido"
-              docker logs --tail 50 ${{ env.ARTIFACT }}
+              sudo docker logs --tail 50 ${{ env.ARTIFACT }}
               exit 1
             fi
 
             echo "✅ Deploy exitoso"
-            docker image prune --filter "until=12h" -f
+            sudo docker image prune --filter "until=12h" -f
