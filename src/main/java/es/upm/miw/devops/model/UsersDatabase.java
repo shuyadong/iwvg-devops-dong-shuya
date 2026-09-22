@@ -41,4 +41,12 @@ public class UsersDatabase {
             return this.userJpaRepository.save(entity).toUser();
         });
     }
+
+    public Optional<User> update(String id, User user) {
+        return this.userJpaRepository.findById(id).map(entity -> {
+            User updatedUser = new User(id, user.firstName(), user.familyName(), user.email(), user.identity(),
+                    user.address(), user.city(), user.province(), user.postalCode(), user.active(), user.role());
+            return this.userJpaRepository.save(UserEntity.from(updatedUser)).toUser();
+        });
+    }
 }
