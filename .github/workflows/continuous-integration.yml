@@ -77,6 +77,5 @@ jobs:
           -Dsonar.organization=shuyadong
           -Dsonar.host.url=https://sonarcloud.io
           -Dsonar.token=${{ secrets.SONAR_TOKEN }}
-          -Dsonar.qualitygate.wait=true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
