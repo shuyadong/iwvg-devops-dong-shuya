@@ -49,4 +49,14 @@ public class UsersDatabase {
             return this.userJpaRepository.save(UserEntity.from(updatedUser)).toUser();
         });
     }
+
+    public List<User> updateActive(List<UserActiveUpdate> updates) {
+        return updates.stream()
+                .map(update -> this.userJpaRepository.findById(update.id()).map(entity -> {
+                    entity.setActive(update.active());
+                    return this.userJpaRepository.save(entity).toUser();
+                }))
+                .flatMap(Optional::stream)
+                .toList();
+    }
 }
