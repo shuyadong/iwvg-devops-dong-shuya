@@ -56,4 +56,8 @@ class UserEntity {
     void setActive(boolean active) {
         this.active = active;
     }
+
+    Role getRole() {
+        return this.role;
+    }
 }
