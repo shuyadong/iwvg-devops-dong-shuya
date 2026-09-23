@@ -156,6 +156,27 @@
                             <goal>report</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>jacoco-check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <rule>
+                                    <element>BUNDLE</element>
+                                    <limits>
+                                        <limit>
+                                            <counter>LINE</counter>
+                                            <value>COVEREDRATIO</value>
+                                            <minimum>0.80</minimum>
+                                        </limit>
+                                    </limits>
+                                </rule>
+                            </rules>
+                        </configuration>
+                    </execution>
                 </executions>
             </plugin>
             <plugin>
@@ -200,7 +221,7 @@
                             </includes>
                         </configuration>
                     </execution>
-                    <!-- 3) Verificación final (reporta fallos si algún IT o FT falla) -->
+                    <!-- 3) Final verification (reports failures if any IT or FT fails) -->
                     <execution>
                         <id>verify-all</id>
                         <phase>verify</phase>

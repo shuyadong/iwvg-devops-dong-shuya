@@ -40,13 +40,13 @@ jobs:
       # -------------------------------------------------------------
       # STEP: Slack Success Notification
       # -------------------------------------------------------------
-      - name: Notificar éxito a Slack
-        if: success() # Solo se dispara si la compilación y tests fueron exitosos
+      - name: Notify Slack on success
+        if: success() # Only triggered if the build and tests succeeded
         uses: slackapi/slack-github-action@70cd7be8e40a46e8b0eced40b0de447bdb42f68e # v1.26.0
         with:
           payload: |
             {
-              "text": "✅ *¡Integración Continua Exitosa!*\n*Repositorio:* ${{ github.repository }}\n*Rama:* ${{ github.ref_name }}\n*Autor:* ${{ github.actor }}\n*Commit:* ${{ github.sha }}\n*Estado:* La API Spring Boot ha sido compilada y validada correctamente con las pruebas de Maven."
+              "text": "✅ *Continuous Integration Successful!*\n*Repository:* ${{ github.repository }}\n*Branch:* ${{ github.ref_name }}\n*Author:* ${{ github.actor }}\n*Commit:* ${{ github.sha }}\n*Status:* The Spring Boot API was built and validated successfully with the Maven tests."
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -54,13 +54,13 @@ jobs:
       # -------------------------------------------------------------
       # STEP: Slack Failure Notification
       # -------------------------------------------------------------
-      - name: Notificar fallo a Slack
+      - name: Notify Slack on failure
         if: failure() # Only triggered if any previous step failed
         uses: slackapi/slack-github-action@70cd7be8e40a46e8b0eced40b0de447bdb42f68e # v1.26.0
         with:
           payload: |
             {
-              "text": "🚨 *¡Fallo en la Integración Continua!*\n*Repositorio:* ${{ github.repository }}\n*Rama:* ${{ github.ref_name }}\n*Autor:* ${{ github.actor }}\n*Commit:* ${{ github.sha }}\n*Estado:* La compilación o las pruebas han fallado. Revisen los logs en GitHub Actions."
+              "text": "🚨 *Continuous Integration Failed!*\n*Repository:* ${{ github.repository }}\n*Branch:* ${{ github.ref_name }}\n*Author:* ${{ github.actor }}\n*Commit:* ${{ github.sha }}\n*Status:* The build or tests failed. Check the logs in GitHub Actions."
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
@@ -72,10 +72,11 @@ jobs:
 
       - name: 📊 Sonar Analysis
         run: >
-          mvn -B sonar:sonar 
+          mvn -B sonar:sonar
           -Dsonar.projectKey=shuyadong_${{ env.ARTIFACT }}
           -Dsonar.organization=shuyadong
-          -Dsonar.host.url=https://sonarcloud.io 
+          -Dsonar.host.url=https://sonarcloud.io
           -Dsonar.token=${{ secrets.SONAR_TOKEN }}
+          -Dsonar.qualitygate.wait=true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
