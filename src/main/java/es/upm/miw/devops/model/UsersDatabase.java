@@ -52,10 +52,12 @@ public class UsersDatabase {
 
     public List<User> updateActive(List<UserActiveUpdate> updates) {
         return updates.stream()
-                .map(update -> this.userJpaRepository.findById(update.id()).map(entity -> {
-                    entity.setActive(update.active());
-                    return this.userJpaRepository.save(entity).toUser();
-                }))
+                .map(update -> this.userJpaRepository.findById(update.id())
+                        .filter(entity -> update.active() || entity.getRole() != Role.ADMIN)
+                        .map(entity -> {
+                            entity.setActive(update.active());
+                            return this.userJpaRepository.save(entity).toUser();
+                        }))
                 .flatMap(Optional::stream)
                 .toList();
     }

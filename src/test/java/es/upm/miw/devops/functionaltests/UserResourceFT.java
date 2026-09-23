@@ -175,4 +175,25 @@ class UserResourceFT {
                 .expectBody()
                 .jsonPath("$.active").isEqualTo(true);
     }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    void testUpdateActiveUsersSkipsAdminDeactivation() {
+        webTestClient.patch()
+                .uri("/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(List.of(
+                        new UserActiveUpdate("1", false),
+                        new UserActiveUpdate("4", false)))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(User.class)
+                .value(users -> assertThat(users).extracting(User::id).containsExactly("4"));
+
+        webTestClient.get()
+                .uri("/user/{id}", "1")
+                .exchange()
+                .expectBody()
+                .jsonPath("$.active").isEqualTo(true);
+    }
 }

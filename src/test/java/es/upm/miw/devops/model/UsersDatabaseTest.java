@@ -134,4 +134,25 @@ class UsersDatabaseTest {
 
         assertThat(updated).extracting(User::id).containsExactly("4");
     }
+
+    @Test
+    void testUpdateActiveListSkipsAdminDeactivation() {
+        List<User> updated = this.usersDatabase.updateActive(List.of(
+                new UserActiveUpdate("1", false),
+                new UserActiveUpdate("4", false)));
+
+        assertThat(updated).extracting(User::id).containsExactly("4");
+        assertThat(this.usersDatabase.findById("1")).isPresent();
+        assertThat(this.usersDatabase.findById("1").get().active()).isTrue();
+    }
+
+    @Test
+    void testUpdateActiveListAllowsAdminActivation() {
+        List<User> updated = this.usersDatabase.updateActive(List.of(
+                new UserActiveUpdate("5", true)));
+
+        assertThat(updated).extracting(User::id).containsExactly("5");
+        assertThat(this.usersDatabase.findById("5")).isPresent();
+        assertThat(this.usersDatabase.findById("5").get().active()).isTrue();
+    }
 }
