@@ -104,7 +104,7 @@ Se crearán las siguientes 4 historias (**Feature**).
 #### 6. Preparación del software a desarrollar (**2 ptos**) y siguiente liberación.
 Se crearán las siguientes 2 historias (**Feature**).
 * Feature 1ª: :one: añadir el endpoint: **PUT /user/{id}**, sin tests. :three: Crear tests del servicio y del endpoint.
-* Feature 2ª: :two: añadir el endpoint: **PATH /user body:[{id,active}]**, actualiza una lista de usuarios solo con el campo active. :four: añadir los tests de servicio y endpoint.
+* Feature 2ª: :two: añadir el endpoint: **PATCH /user body:[{id,active}]**, actualiza una lista de usuarios solo con el campo active. :four: añadir los tests de servicio y endpoint.
 
 > Realizar la tercera liberación del código en **staging** y **main**.
 

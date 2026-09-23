@@ -2,10 +2,12 @@ package es.upm.miw.devops.rest;
 
 import es.upm.miw.devops.model.Role;
 import es.upm.miw.devops.model.User;
+import es.upm.miw.devops.model.UserActiveUpdate;
 import es.upm.miw.devops.model.UsersDatabase;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,5 +52,16 @@ public class UserResource {
     public User setActive(@PathVariable String id, @RequestBody boolean active) {
         return this.usersDatabase.updateActive(id, active)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found: " + id));
+    }
+
+    @PutMapping("/{id}")
+    public User updateUser(@PathVariable String id, @RequestBody User user) {
+        return this.usersDatabase.update(id, user)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found: " + id));
+    }
+
+    @PatchMapping
+    public List<User> updateActiveUsers(@RequestBody List<UserActiveUpdate> updates) {
+        return this.usersDatabase.updateActive(updates);
     }
 }
