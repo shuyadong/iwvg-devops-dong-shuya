@@ -31,7 +31,7 @@ jobs:
               -v postgres-data:/var/lib/postgresql/data \
               postgres:15.10
 
-            echo "⏳ Esperando a que Postgres esté listo"
+            echo "⏳ Waiting for Postgres to be ready"
             for i in $(seq 1 6); do
               sleep 5
               sudo docker exec postgres pg_isready -U "${{ secrets.POSTGRES_USER }}" && break
