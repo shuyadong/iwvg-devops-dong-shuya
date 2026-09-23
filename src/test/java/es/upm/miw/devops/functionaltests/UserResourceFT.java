@@ -1,6 +1,8 @@
 package es.upm.miw.devops.functionaltests;
 
+import es.upm.miw.devops.model.Role;
 import es.upm.miw.devops.model.User;
+import es.upm.miw.devops.model.UserActiveUpdate;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
@@ -9,6 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.reactive.server.WebTestClient;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -104,5 +108,71 @@ class UserResourceFT {
                 .bodyValue(true)
                 .exchange()
                 .expectStatus().isNotFound();
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    void testUpdateUserFound() {
+        User newData = new User("3", "Ana", "Garcia", "ana.garcia@example.com", "12345678A",
+                "Calle Mayor 1", "Madrid", "Madrid", "28001", true, Role.USER);
+
+        webTestClient.put()
+                .uri("/user/{id}", "3")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(newData)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.id").isEqualTo("3")
+                .jsonPath("$.firstName").isEqualTo("Ana")
+                .jsonPath("$.familyName").isEqualTo("Garcia")
+                .jsonPath("$.email").isEqualTo("ana.garcia@example.com");
+
+        webTestClient.get()
+                .uri("/user/{id}", "3")
+                .exchange()
+                .expectBody()
+                .jsonPath("$.firstName").isEqualTo("Ana");
+    }
+
+    @Test
+    void testUpdateUserNotFound() {
+        User newData = new User("unknown", "Ana", "Garcia", "ana.garcia@example.com", "12345678A",
+                "Calle Mayor 1", "Madrid", "Madrid", "28001", true, Role.USER);
+
+        webTestClient.put()
+                .uri("/user/{id}", "unknown")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(newData)
+                .exchange()
+                .expectStatus().isNotFound();
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    void testUpdateActiveUsers() {
+        webTestClient.patch()
+                .uri("/user")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(List.of(
+                        new UserActiveUpdate("3", false),
+                        new UserActiveUpdate("4", true),
+                        new UserActiveUpdate("unknown", true)))
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(User.class)
+                .value(users -> assertThat(users).extracting(User::id).containsExactlyInAnyOrder("3", "4"));
+
+        webTestClient.get()
+                .uri("/user/{id}", "3")
+                .exchange()
+                .expectBody()
+                .jsonPath("$.active").isEqualTo(false);
+
+        webTestClient.get()
+                .uri("/user/{id}", "4")
+                .exchange()
+                .expectBody()
+                .jsonPath("$.active").isEqualTo(true);
     }
 }
