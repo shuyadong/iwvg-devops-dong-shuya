@@ -2,8 +2,6 @@ name: CD-BBDD
 on:
   push:
     branches: ['main']
-    paths:
-      - 'docker-compose-db.yml'
   workflow_dispatch:
 
 jobs:
