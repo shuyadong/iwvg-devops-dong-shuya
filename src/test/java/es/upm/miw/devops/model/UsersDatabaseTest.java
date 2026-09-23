@@ -87,4 +87,29 @@ class UsersDatabaseTest {
 
         assertThat(updated).isEmpty();
     }
+
+    @Test
+    void testUpdateFound() {
+        User newData = new User("3", "Ana", "Garcia", "ana.garcia@example.com", "12345678A",
+                "Calle Mayor 1", "Madrid", "Madrid", "28001", true, Role.USER);
+
+        Optional<User> updated = this.usersDatabase.update("3", newData);
+
+        assertThat(updated).isPresent();
+        assertThat(updated.get().firstName()).isEqualTo("Ana");
+        assertThat(updated.get().familyName()).isEqualTo("Garcia");
+        assertThat(updated.get().email()).isEqualTo("ana.garcia@example.com");
+        assertThat(this.usersDatabase.findById("3")).isPresent();
+        assertThat(this.usersDatabase.findById("3").get().firstName()).isEqualTo("Ana");
+    }
+
+    @Test
+    void testUpdateNotFound() {
+        User newData = new User("unknown", "Ana", "Garcia", "ana.garcia@example.com", "12345678A",
+                "Calle Mayor 1", "Madrid", "Madrid", "28001", true, Role.USER);
+
+        Optional<User> updated = this.usersDatabase.update("unknown", newData);
+
+        assertThat(updated).isEmpty();
+    }
 }

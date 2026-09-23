@@ -1,5 +1,6 @@
 package es.upm.miw.devops.functionaltests;
 
+import es.upm.miw.devops.model.Role;
 import es.upm.miw.devops.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,6 +103,44 @@ class UserResourceFT {
                 .uri("/user/{id}/active", "unknown")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(true)
+                .exchange()
+                .expectStatus().isNotFound();
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    void testUpdateUserFound() {
+        User newData = new User("3", "Ana", "Garcia", "ana.garcia@example.com", "12345678A",
+                "Calle Mayor 1", "Madrid", "Madrid", "28001", true, Role.USER);
+
+        webTestClient.put()
+                .uri("/user/{id}", "3")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(newData)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody()
+                .jsonPath("$.id").isEqualTo("3")
+                .jsonPath("$.firstName").isEqualTo("Ana")
+                .jsonPath("$.familyName").isEqualTo("Garcia")
+                .jsonPath("$.email").isEqualTo("ana.garcia@example.com");
+
+        webTestClient.get()
+                .uri("/user/{id}", "3")
+                .exchange()
+                .expectBody()
+                .jsonPath("$.firstName").isEqualTo("Ana");
+    }
+
+    @Test
+    void testUpdateUserNotFound() {
+        User newData = new User("unknown", "Ana", "Garcia", "ana.garcia@example.com", "12345678A",
+                "Calle Mayor 1", "Madrid", "Madrid", "28001", true, Role.USER);
+
+        webTestClient.put()
+                .uri("/user/{id}", "unknown")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(newData)
                 .exchange()
                 .expectStatus().isNotFound();
     }
