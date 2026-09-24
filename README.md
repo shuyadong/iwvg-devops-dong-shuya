@@ -2,12 +2,12 @@
 ## Ingeniería Web: Visión General (IWVG) DevOps
 > Este proyecto es un apoyo docente de la asignatura. Cada release liberada corresponde al código utilizado en clase del curso indicado
 
-[![GitHub](https://img.shields.io/github/license/miw-upm/iwvg-devops?color=informational)](https://github.com/miw-upm/iwvg-devops/blob/develop/LICENSE.md)
-[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/miw-upm/iwvg-devops?color=informational)](https://github.com/miw-upm/iwvg-devops/releases)
-![GitHub Release Date](https://img.shields.io/github/release-date/miw-upm/iwvg-devops?color=informational)
-![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/miw-upm/iwvg-devops)
-![GitHub issues](https://img.shields.io/github/issues/miw-upm/iwvg-devops?color=important)
-![GitHub closed issues](https://img.shields.io/github/issues-closed/miw-upm/iwvg-devops?color=informational)
+[![GitHub](https://img.shields.io/github/license/shuyadong/iwvg-devops-dong-shuya?color=informational)](https://github.com/shuyadong/iwvg-devops-dong-shuya/blob/develop/LICENSE.md)
+[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/shuyadong/iwvg-devops-dong-shuya?include_prereleases&color=informational)](https://github.com/shuyadong/iwvg-devops-dong-shuya/releases/tag/V6.3.72-RC4)
+![GitHub Release Date](https://img.shields.io/github/release-date-pre/shuyadong/iwvg-devops-dong-shuya?color=informational)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/shuyadong/iwvg-devops-dong-shuya)
+![GitHub issues](https://img.shields.io/github/issues/shuyadong/iwvg-devops-dong-shuya?color=important)
+![GitHub closed issues](https://img.shields.io/github/issues-closed/shuyadong/iwvg-devops-dong-shuya?color=informational)
 
 ### Estado del código
 [![DevOps](https://github.com/shuyadong/iwvg-devops-dong-shuya/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/shuyadong/iwvg-devops-dong-shuya/actions/workflows/continuous-integration.yml)
